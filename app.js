@@ -14,7 +14,12 @@ import { auth } from "./middlewares/auth.js";
 import routerProd from "./router/productos.js";
 import bodyParser from "body-parser"
 import { productos as productosApi } from "./items.js"
+import compression from "compression";
+import pino from "pino"
 const app = express();
+const logger = pino()
+logger.level = "info"
+const warnLogger = pino("warn.log")
 
 /*============================[Middlewares]============================*/
 
@@ -32,6 +37,7 @@ app.use(
   })
 );
 
+app.use(compression())
 app.use(passport.initialize());
 app.use(passport.session());
 app.use("/static",  express.static("./static/"))
@@ -78,6 +84,8 @@ app.use(express.json());
 /*============================[Rutas Home, falta pasarlas a routes]============================*/
 
 app.get("/", (req, res) => {
+  let {url, method} = req
+  logger.info("Peticion recibida a %s metodo %s",url, method)
   if (req.session.username) {
     res.redirect("/home");
   } else {
@@ -86,6 +94,8 @@ app.get("/", (req, res) => {
 });
 
 app.get("/home", auth, async (req,res) =>{
+  let {url, method} = req
+  logger.info("Peticion recibida a %s metodo %s",url, method)
   const datosUsuario = await User.findById(req.user._id).lean();
   const productos = await productosApi.listarAll()
   res.render("prodForm", {
@@ -95,23 +105,33 @@ app.get("/home", auth, async (req,res) =>{
 })
 
 app.get("/login", (req, res) => {
+  let {url, method} = req
+  logger.info("Peticion recibida a %s metodo %s",url, method)
   res.render("login");
 });
 
 app.get("/login-error", (req, res) => {
+  let {url, method} = req
+  logger.info("Peticion recibida a %s metodo %s",url, method)
   res.render("login-error");
 });
 
 app.post("/login", passport.authenticate("local", {failureRedirect: "login-error"}),(req, res) => {
+  let {url, method} = req
+  logger.info("Peticion recibida a %s metodo %s",url, method)
     res.redirect("/home");
   }
 );
 
 app.get("/register", (req, res) => {
+  let {url, method} = req
+  logger.info("Peticion recibida a %s metodo %s",url, method)
   res.render("register");
 });
 
 app.post("/register", (req, res) => {
+  let {url, method} = req
+  logger.info("Peticion recibida a %s metodo %s",url, method)
   const { username, password} = req.body;
   User.findOne({ username }, async (err, user) => {
     if (err) console.log(err);
@@ -129,6 +149,8 @@ app.post("/register", (req, res) => {
 });
 
 app.get("/logout", (req, res) => {
+  let {url, method} = req
+  logger.info("Peticion recibida a %s metodo %s",url, method)
   req.logout(function (err) {
     if (err) {
       return next(err);
@@ -136,6 +158,27 @@ app.get("/logout", (req, res) => {
     res.redirect("/");
   });
 });
+
+app.get("/info", (req, res) =>{
+  let {url, method} = req
+  logger.info("Peticion recibida a %s metodo %s",url, method)
+  res.send(
+      `Sistema operativo: ${process.platform}
+      Version de Node: ${process.version}
+      Process Id: ${process.pid}
+      Memoria total reservada: ${process.memoryUsage().rss}
+      Directorio: ${process.cwd()}
+      Path de ejecucion: ${process.execPath}`
+      
+  )
+})
+
+app.get("*", (req, res) =>{
+  let {url, method} = req
+  logger.warn("Ruta %s %s no implementada",url, method)
+  warnLogger.warn("Ruta %s %s no implementada",url, method)
+  res.send(`Ruta ${url} ${method} no implementada`)
+})
 
 /*============================[Servidor]============================*/
 const PORT = 8080;
