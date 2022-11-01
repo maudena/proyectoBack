@@ -128,6 +128,7 @@ app.post("/register", (req, res) => {
   });
 });
 
+
 app.get("/logout", (req, res) => {
   req.logout(function (err) {
     if (err) {
