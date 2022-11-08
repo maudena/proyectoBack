@@ -13,10 +13,21 @@ import "./config.js";
 import { auth } from "./middlewares/auth.js";
 import routerProd from "./router/productos.js";
 import bodyParser from "body-parser"
-import { productos as productosApi } from "./items.js"
+import compression from "compression";
+import routerCart from "./router/cart.js";
+import routerAdmin from "./router/admin.js";
+import {productos as productosApi} from "./items.js"
+import { createTransport } from "nodemailer"
 const app = express();
 
 /*============================[Middlewares]============================*/
+app.use(express.urlencoded({ extended: false }));
+app.use(express.json());
+app.use(compression())
+app.use("/static",  express.static("./static/"))
+app.use(routerProd)
+app.use(routerCart)
+app.use(routerAdmin)
 
 /*----------- Session y Passport -----------*/
 app.use(cookieParser());
@@ -32,10 +43,7 @@ app.use(
   })
 );
 
-app.use(passport.initialize());
-app.use(passport.session());
-app.use("/static",  express.static("./static/"))
-app.use(routerProd)
+
 
 passport.use(
   new LocalStrategy((username, password, done) => {
@@ -60,7 +68,11 @@ passport.deserializeUser(async (id, done) => {
   return done(null, user);
 });
 
+app.use(passport.initialize());
+app.use(passport.session());
+
 /*----------- Handlebars -----------*/
+
 app.set("views", path.join(path.dirname(""), "./views"));
 app.engine(
   ".hbs",
@@ -72,10 +84,28 @@ app.engine(
 );
 app.set("view engine", ".hbs");
 
-app.use(express.urlencoded({ extended: false }));
-app.use(express.json());
+/*----------- Nodemailer -----------*/
+const testMail = 'mdenardi32@gmail.com'
+const testPass = 'byndkuiatajbaple'
 
-/*============================[Rutas Home, falta pasarlas a routes]============================*/
+const transporter = createTransport({
+  service: "gmail",
+  secure: false,
+  port: 587,
+  auth: {
+      user: testMail,
+      pass: testPass
+  },
+  tls: {
+    rejectUnauthorized: false
+}
+});
+
+
+
+
+
+/*============================[Rutas Login, Registro, Home, falta pasarlas a routes]============================*/
 
 app.get("/", (req, res) => {
   if (req.session.username) {
@@ -86,13 +116,14 @@ app.get("/", (req, res) => {
 });
 
 app.get("/home", auth, async (req,res) =>{
-  const datosUsuario = await User.findById(req.user._id).lean();
   const productos = await productosApi.listarAll()
-  res.render("prodForm", {
-    datos: datosUsuario,
-    productos: productos
+  const datosUsuario = await User.findById(req.user._id).lean();
+  res.render("home", {
+    productos: productos,
+    datos: datosUsuario
   })
 })
+
 
 app.get("/login", (req, res) => {
   res.render("login");
@@ -111,22 +142,45 @@ app.get("/register", (req, res) => {
   res.render("register");
 });
 
-app.post("/register", (req, res) => {
-  const { username, password} = req.body;
-  User.findOne({ username }, async (err, user) => {
+app.post("/register", async (req, res) => {
+  const { email, password, name, address, age, phone} = req.body;
+  User.findOne({ email }, async (err, user) => {
     if (err) console.log(err);
     if (user) res.render("register-error");
     if (!user) {
       const hashedPassword = await bcrypt.hash(password, 8);
       const newUser = new User({
-        username,
+        email,
         password: hashedPassword,
+        name,
+        address,
+        age,
+        phone
       });
       await newUser.save();
+
+      const emailContent = {
+        from: "Test App Guitarras",
+        to: `Administrador ${testMail}`,
+        subject: "Nuevo Registro",
+        html: `El usuario ${newUser.name} se ha registrado correctamente.<br><br> Email: ${newUser.email} <br> Password: ${newUser.password} <br> Direccion: ${newUser.address} <br> Edad: ${newUser.age} <br> Telefono: ${newUser.phone} `
+      }
+      try {
+        await transporter.sendMail(emailContent)
+      } catch (error) {
+        console.log(error);
+      }
       res.redirect("/login");
     }
   });
 });
+
+app.get("/profile", async (req, res) =>{
+  const datosUsuario = await User.findById(req.user._id).lean();
+  res.render("profile",{
+    datos: datosUsuario
+  })
+})
 
 
 app.get("/logout", (req, res) => {

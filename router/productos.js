@@ -9,7 +9,9 @@ const routerProd = Router();
 
 routerProd.get("/productos", async (req, res) => {
   const productos = await productosApi.listarAll()
-  res.json(productos);
+  res.render("productos",{
+    productos
+  });
 });
 
 routerProd.get("/productos/:id", async (req, res) => {
@@ -17,10 +19,10 @@ routerProd.get("/productos/:id", async (req, res) => {
 });
 
 
-routerProd.post("/home", async (req, res) => {
+routerProd.post("/admin", async (req, res) => {
   try {
     await productosApi.guardar(req.body)
-    res.redirect("/home")
+    res.redirect("/admin")
   } catch (error) {
     console.log(error);
   }

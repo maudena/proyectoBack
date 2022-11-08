@@ -1,13 +1,19 @@
 import { json } from "express";
 import express from 'express';
+import { productos as productosApi } from "../items.js"
+import {carritos as carritosApi} from "../items.js"
+import "../config.js";
 const { Router } = express;
 const routerCart = Router();
 
-import {carritos as carritosApi} from "../src/daos/index.js"
-import {productos as productosApi} from "../src/daos/index.js"
+
+
 
 routerCart.get("/carrito", async (req, res) => {
-  res.json(await carritosApi.listarAll());
+  const carrito = carritosApi.listarAll();
+  res.render("cart",{
+    carrito: carrito
+  })
 });
 
 routerCart.get("/carrito/:id/productos", async (req, res) => {
@@ -15,8 +21,9 @@ routerCart.get("/carrito/:id/productos", async (req, res) => {
   res.json(carrito)
 });
 
-routerCart.post("/carrito", async (req, res) => {
-  res.json(await carritosApi.guardar());
+routerCart.post("/home", async (req, res) => {
+  await carritosApi.guardar()
+  res.redirect("/home")
 });
 
 routerCart.delete("/carrito/:id", async (req, res) => {
