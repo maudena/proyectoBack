@@ -1,8 +1,7 @@
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
   <div class="container-fluid">
-    <p class="navbar-brand my-2 mr-5">Bienvenido, {{datos.name}}</p>
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown"
-      aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+    <a class="navbar-brand" href="#">Bienvenido, {{datos.name}}</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarNavDropdown">
@@ -17,21 +16,18 @@
           <a class="nav-link" onclick="location.href='/carrito'">Carrito</a>
         </li>
         <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown"
-            aria-expanded="false">
-            Más...
+          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            Cuenta
           </a>
           <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-            <li><a class="dropdown-item" href="#">Ayuda</a></li>
-            <li><a class="dropdown-item" onclick="location.href='/admin'">Manejo de productos -admin</a></li>
-            <li><a class="dropdown-item" onclick="location.href='/profile'">Configuracion de perfil</a></li>
+            <li><a class="dropdown-item" onclick="location.href='/admin'">Manejo de productos</a></li>
+            <li><a class="dropdown-item" onclick="location.href='/profile'">Perfil</a></li>
+            <li><a class="dropdown-item" onclick="location.href='/logout'">Logout</a></li>
           </ul>
         </li>
-
       </ul>
     </div>
   </div>
-  <div class="d-flex"><button class="btn btn-danger" onclick="location.href='/logout'">LOGOUT</button></div>
 </nav>
 
 <table class="table mt-5">

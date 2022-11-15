@@ -36,7 +36,7 @@ class ContenedorMongoDB{
             removeField(doc, '__v')
             return doc
         }catch(error){
-            throw new Error('Error al guardar')
+            throw new Error(error)
         }
     }
 

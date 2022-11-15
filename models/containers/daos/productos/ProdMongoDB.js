@@ -7,6 +7,10 @@ class ProdMongoDB extends ContenedorMongoDB {
       title: { type: String, required: true },
       price: { type: Number, required: true },
       stock: { type: Number, required: true },
+      filename: { type: String },
+      path:{ type: String },
+      originalname: { type: String},
+      inCart: {type: Boolean, default: false}
     });
   }
 }

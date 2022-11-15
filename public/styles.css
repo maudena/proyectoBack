@@ -1,0 +1,9 @@
+/* #productCard{
+    max-height: 45rem;
+    max-width: 15rem;
+} */
+.card-img-top {
+    width: 100%;
+    height: 30vw;
+    object-fit: contain;
+}
