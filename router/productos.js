@@ -1,4 +1,3 @@
-import { productos as productosApi } from "../items.js"
 import "../config.js";
 import { crearObj, routerDelete, getProd, prodDelete, prodPut } from "../controllers/productos.js";
 

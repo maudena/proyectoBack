@@ -1,4 +1,4 @@
-import ProdMongoDB from "./models/containers/daos/productos/ProdMongoDB.js"
+import ProdMongoDB from "./models/ProdModel.js"
 
 
 let productos = new ProdMongoDB;

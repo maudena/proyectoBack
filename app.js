@@ -1,4 +1,4 @@
-/*============================[Modulos]============================*/
+/*============================[MODULOS]============================*/
 import express from "express";
 import cookieParser from "cookie-parser";
 import session from "express-session";
@@ -24,7 +24,7 @@ const app = express();
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-                          /*============================[Middlewares]============================*/
+/*============================[MIDDLEWARES]============================*/
                           
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
@@ -41,7 +41,7 @@ app.use(multer({storage: storage}).single("image"))
 
 
 
-                                /*----------- Session y Passport -----------*/
+/*============================[SESSION Y PASSPORT]============================*/
 app.use(cookieParser());
 app.use(bodyParser.urlencoded({extended: false}))
 app.use(
@@ -55,6 +55,10 @@ app.use(
   })
 );
 
+app.use(function(req,res,next){
+  res.locals.session = req.session
+  next()
+})
 
 
 passport.use(
@@ -82,13 +86,16 @@ passport.deserializeUser(async (id, done) => {
 
 app.use(passport.initialize());
 app.use(passport.session());
+
+/*============================[RUTAS]============================*/
+
 app.use(routerLogin)
 app.use(routerHome)
 app.use(routerProd)
 app.use(routerAdmin)
 app.use(routerCart)
 
-                                /*----------- Handlebars -----------*/
+/*============================[HANDLEBARS]============================*/
 
 app.set("views", path.join(path.dirname(""), "./views"));
 app.engine(
@@ -101,7 +108,7 @@ app.engine(
 );
 app.set("view engine", ".hbs");
 
-/*============================[Servidor]============================*/
+/*============================[SERVIDOR]============================*/
 const PORT = process.env.PORT || 8080;
 const server = app.listen(PORT, () => {
   console.log(`Servidor escuchando en puerto ${PORT}`);

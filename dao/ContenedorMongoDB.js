@@ -1,9 +1,6 @@
 import mongoose from 'mongoose'
 import { asPOJO, removeField, renameField } from "./utils/objUtils.js";
 
-
-
-
 class ContenedorMongoDB{
     constructor(nameColl, esquema){
         this.coleccion = mongoose.model(nameColl, esquema)

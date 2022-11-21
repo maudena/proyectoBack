@@ -1,4 +1,4 @@
-import {Cart} from "../models/containers/daos/carritos/CartMongoDB.js"
+import {Cart} from "../models/CartModel.js"
 import { productos } from "../items.js"
 
 export async function addToCart(req, res){
@@ -17,10 +17,19 @@ export async function addToCart(req, res){
 }
 
 export async function renderCart(req,res){
-    let carrito = new Cart(req.session.cart ? req.session.cart:{})
-    let carritoArr = carrito.generateArray()
+    if(!req.session.cart){
+      res.render("cart",{
+        productos: null
+      })
+    }else{
+      let carrito = new Cart(req.session.cart)
+      let carritoArr = carrito.generateArray()
+  
+      res.render("cart", {
+        carrito: carritoArr,
+        totalPrice: carrito.totalPrice
+      })
+    }
 
-    res.render("cart", {
-      carrito: carritoArr
-    })
+    
   }

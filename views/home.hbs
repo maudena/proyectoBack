@@ -13,7 +13,8 @@
           <a class="nav-link" onclick="location.href='/productos'">Productos</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" onclick="location.href='/carrito'">Carrito</a>
+          <a class="nav-link" onclick="location.href='/carrito'">Carrito
+          <span class="badge bg-light text-dark">{{session.cart.totalQty}}</span></a>
         </li>
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
