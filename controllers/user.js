@@ -20,7 +20,7 @@ const transporter = createTransport({
 
 export async function postRegister(req, res){
   const { email, password, name, address, age, phone } = req.body;
-  User.findOne({ email }, async (err, user) => {
+ await User.findOne({ email }, async (err, user) => {
     if (err) console.log(err);
     if (user) res.render("register-error");
     if (!user) {
