@@ -40,7 +40,7 @@ class ContenedorMongoDB{
     async actualizar(elem){
         try{
             renameField(elem, 'id', '_id')
-            const result = await this.coleccion.replaceOne({'_id': elem._id },elem)
+            await this.coleccion.replaceOne({'_id': elem._id },elem)
             return elem
         }catch(error){
             console.log(error.message);

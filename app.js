@@ -18,6 +18,7 @@ import routerLogin from "./router/login.js"
 import routerHome from "./router/home.js"
 import routerCart from "./router/cart.js";
 import routerAdmin from "./router/admin.js";
+import routerApi from "./router/api.js"
 import multer from "multer"
 import { v4 as uuidv4 } from 'uuid';
 const app = express();
@@ -94,6 +95,7 @@ app.use(routerHome)
 app.use(routerProd)
 app.use(routerAdmin)
 app.use(routerCart)
+app.use("/api", routerApi)
 
 /*============================[HANDLEBARS]============================*/
 
