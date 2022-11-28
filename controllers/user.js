@@ -19,7 +19,7 @@ const transporter = createTransport({
 
 
 export async function postRegister(req, res){
-  const { email, password, name, address, age, phone } = req.body;
+  const { email, password, username, address, age, phone } = req.body;
  User.findOne({ email }, async (err, user) => {
     if (err) console.log(err);
     if (user) res.render("register-error");
@@ -28,7 +28,7 @@ export async function postRegister(req, res){
       const newUser = new User({
         email,
         password: hashedPassword,
-        name,
+        username,
         address,
         age,
         phone,
@@ -39,7 +39,7 @@ export async function postRegister(req, res){
         from: "Test App Guitarras",
         to: `Administrador ${testMail}`,
         subject: "Nuevo Registro",
-        html: `El usuario ${newUser.name} se ha registrado correctamente.<br><br> Email: ${newUser.email} <br> Password: ${newUser.password} <br> Direccion: ${newUser.address} <br> Edad: ${newUser.age} <br> Telefono: ${newUser.phone} `,
+        html: `El usuario ${newUser.username} se ha registrado correctamente.<br><br> Email: ${newUser.email} <br> Password: ${newUser.password} <br> Direccion: ${newUser.address} <br> Edad: ${newUser.age} <br> Telefono: ${newUser.phone} `,
       };
       try {
         await transporter.sendMail(emailContent);
