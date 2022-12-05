@@ -3,13 +3,13 @@ import "../config.js";
 
 export async function crearObj(req, res) {
   try {
-    await productosApi.guardar({
-      title: req.body.title,
-      price: req.body.price,
-      stock: req.body.stock,
-      filename: req.body.filename,
-      path: "public/" + req.body.filename,
-      originalname: req.body.originalname,
+   return await productosApi.guardar({
+      title: req.title,
+      price: req.price,
+      stock: req.stock,
+      // filename: req.body.filename,
+      // path: "public/" + req.body.filename,
+      // originalname: req.body.originalname,
     });
     res.send(req.body);
   } catch (error) {
@@ -17,15 +17,20 @@ export async function crearObj(req, res) {
   }
 }
 
-export async function getProd(req, res) {
+export async function getItem(req, res){
+  const producto = await productosApi.listar(req.id)
+  return producto;
+}
+
+export async function getProd() {
   const productos = await productosApi.listarAll();
-  res.send(productos);
+  return productos;
 }
 
 export async function routerDelete(req, res) {
   const admin = true;
   if (admin == true) {
-    res.json(await productosApi.delete(req.params.id));
+    return await productosApi.delete(req.id);
   } else {
     throw new Error("Ruta no autorizada");
   }
@@ -41,11 +46,5 @@ export async function prodDelete(req, res) {
 }
 
 export async function prodPut(req, res) {
-  const admin = true;
-
-  if (admin == true) {
-    res.json(await productosApi.actualizar(req.body));
-  } else {
-    throw new Error("Ruta no autorizada");
-  }
+    return await productosApi.actualizar(req.body);
 }

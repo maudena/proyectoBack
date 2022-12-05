@@ -21,6 +21,9 @@ import routerAdmin from "./router/admin.js";
 import routerApi from "./router/api.js"
 import multer from "multer"
 import { v4 as uuidv4 } from 'uuid';
+import {graphqlHTTP} from "express-graphql"
+import schema from "./graphql/buildSchema.js";
+import {getProd, crearObj, prodPut, routerDelete, getItem} from "./controllers/api.js"
 const app = express();
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -38,6 +41,20 @@ const storage = multer.diskStorage({
   }
 })
 app.use(multer({storage: storage}).single("image"))
+app.use(
+  "/graphql",
+  graphqlHTTP({
+    schema,
+    rootValue: {
+      getItem,
+      getProd,
+      crearObj,
+      prodPut,
+      routerDelete,
+    },
+    graphiql: true,
+  })
+);
 
 
 

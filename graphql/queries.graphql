@@ -1,0 +1,29 @@
+query{
+    getProd{
+    title
+    price
+    stock
+    }
+}
+
+query{
+    getItem(id:""){
+    title
+    price
+    stock
+    }
+}
+
+mutation{
+  crearObj(title:"Fender Jaguar", price: 200000, stock: 10 ){
+    title
+    price
+    stock
+  }
+}
+mutation{
+  routerDelete(id:""){
+  	title
+  }
+}
+
