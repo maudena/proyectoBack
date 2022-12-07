@@ -3,13 +3,13 @@ import "../config.js";
 
 export async function crearObj(req, res) {
   try {
-   return await productosApi.guardar({
-      title: req.title,
-      price: req.price,
-      stock: req.stock,
-      // filename: req.body.filename,
-      // path: "public/" + req.body.filename,
-      // originalname: req.body.originalname,
+   await productosApi.guardar({
+      title: req.body.title,
+      price: req.body.price,
+      stock: req.body.stock,
+      filename: req.body.filename,
+      path: "public/" + req.body.filename,
+      originalname: req.body.originalname,
     });
     res.send(req.body);
   } catch (error) {
@@ -19,18 +19,18 @@ export async function crearObj(req, res) {
 
 export async function getItem(req, res){
   const producto = await productosApi.listar(req.id)
-  return producto;
+  res.send(producto);
 }
 
-export async function getProd() {
+export async function getProd(req, res) {
   const productos = await productosApi.listarAll();
-  return productos;
+  res.send(productos);
 }
 
 export async function routerDelete(req, res) {
   const admin = true;
   if (admin == true) {
-    return await productosApi.delete(req.id);
+    res.send(await productosApi.delete(req.params.id)) 
   } else {
     throw new Error("Ruta no autorizada");
   }
@@ -46,5 +46,5 @@ export async function prodDelete(req, res) {
 }
 
 export async function prodPut(req, res) {
-    return await productosApi.actualizar(req.body);
+    res.send(await productosApi.actualizar(req.body));
 }

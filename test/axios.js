@@ -33,8 +33,8 @@ axios
 //--------------------PUT
 
 // axios
-//   .put("http://localhost:8080/api/productos/63729bad8e76547c7ee22997", {
-//     id: '63729bad8e76547c7ee22997',
+//   .put("http://localhost:8080/api/productos/6390f4883467ca8f391bf077", {
+//     id: '6390f4883467ca8f391bf077',
 //     title: 'Fender Jazzmaster',
 //     price: 250000,
 //     stock: 15,
@@ -55,7 +55,7 @@ axios
 //-------------------DELETE
 
 
-// axios.delete("http://localhost:8080/api/productos/63729bad8e76547c7ee22997")
+// axios.delete("http://localhost:8080/api/productos/6390f4883467ca8f391bf077")
 // .then((response)=>{
 //     console.log(response.data);
 // }).catch((error) =>{
