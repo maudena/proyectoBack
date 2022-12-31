@@ -1,6 +1,8 @@
 import mongoose from "mongoose";
+import dotenv from "dotenv"
+dotenv.config()
 
-mongoose.connect("mongodb+srv://MauriDenardi:hCVV0SoSExbyxtVi@cluster0.e1zw3we.mongodb.net/testProyectoFinal?retryWrites=true&w=majority", function(err){
+mongoose.connect(process.env.MONGOURI,  function(err){
     if(err) {
         console.log(err);
     } else{

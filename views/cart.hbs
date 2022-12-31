@@ -1,8 +1,7 @@
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
   <div class="container-fluid">
-    <a class="navbar-brand" href="#">Bienvenido, {{datos.name}}</a>
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown"
-      aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+    <a class="navbar-brand" href="#">AppMusic</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarNavDropdown">
@@ -11,21 +10,24 @@
           <a class="nav-link active" aria-current="page" href="/home">Home</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" onclick="location.href='/productos'">Productos</a>
+          <a class="nav-link" href='/productos'>Productos</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" onclick="location.href='/carrito'">Carrito</a>
+          <a class="nav-link" href='/carrito'>Carrito
+          <span class="badge bg-light text-dark">{{session.cart.totalQty}}</span></a>
         </li>
         <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button"
-            data-bs-toggle="dropdown" aria-expanded="false">
+          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
             Cuenta
           </a>
           <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-            <li><a class="dropdown-item" onclick="location.href='/admin'">Manejo de productos</a></li>
-            <li><a class="dropdown-item" onclick="location.href='/profile'">Perfil</a></li>
-            <li><a class="dropdown-item" onclick="location.href='/logout'">Logout</a></li>
+            <li><a class="dropdown-item" href='/admin'>Manejo de productos</a></li>
+            <li><a class="dropdown-item" href='/profile'>Perfil</a></li>
+            <li><a class="dropdown-item" href='/logout'>Logout</a></li>
           </ul>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href='/chat'>Chat</a>
         </li>
       </ul>
     </div>
@@ -43,12 +45,8 @@
           <strong>{{item.title}}</strong>
           <span class="label">${{item.price}}</span>
           <div class="btn-group">
-            <button class="btn btn-primary btn-xs dropdown-toggle" type="button" data-bs-toggle="dropdown">Action <span
-                class="caret"></span></button>
-            <ul class="dropdown-menu">
-              <li><a href="">Reduce 1</a></li>
-              <li><a href="">Remover todo</a></li>
-            </ul>
+            <a href="/carrito/delete/{{item._id}}" class="btn btn-success mr-2" role="button">Quitar uno</a>
+            <a href="/carrito/deleteAll/{{item._id}}" class="btn btn-success" role="button">Vaciar carrito</a>
           </div>
         </li>
         {{/each}}
@@ -64,7 +62,8 @@
   <hr>
   <div class="row justify-content-center">
     <div class="col-sm-6 col-md-2 col-md-offset-3 col-sm-offset-3">
-      <a href="/carrito" class="btn btn-success" role="button"> Iniciar pedido</a>
+        <a href="/order" class="btn btn-success" role="button"> Iniciar pedido</a>
+
     </div>
   </div>
 

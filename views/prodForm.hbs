@@ -1,6 +1,6 @@
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
   <div class="container-fluid">
-    <a class="navbar-brand" href="#">Bienvenido, {{datos.name}}</a>
+    <a class="navbar-brand" href="#">AppMusic</a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
@@ -10,47 +10,59 @@
           <a class="nav-link active" aria-current="page" href="/home">Home</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" onclick="location.href='/productos'">Productos</a>
+          <a class="nav-link" href='/productos'>Productos</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" onclick="location.href='/carrito'">Carrito</a>
+          <a class="nav-link" href='/carrito'>Carrito
+          <span class="badge bg-light text-dark">{{session.cart.totalQty}}</span></a>
         </li>
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
             Cuenta
           </a>
           <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-            <li><a class="dropdown-item" onclick="location.href='/admin'">Manejo de productos</a></li>
-            <li><a class="dropdown-item" onclick="location.href='/profile'">Perfil</a></li>
-            <li><a class="dropdown-item" onclick="location.href='/logout'">Logout</a></li>
+            <li><a class="dropdown-item" href='/admin'>Manejo de productos</a></li>
+            <li><a class="dropdown-item" href='/profile'>Perfil</a></li>
+            <li><a class="dropdown-item" href='/logout'>Logout</a></li>
           </ul>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href='/chat'>Chat</a>
         </li>
       </ul>
     </div>
   </div>
 </nav>
 <div class="container my-5" style="height: 200px; width: 500px">
-    <form id="addItem" method="post" action="/admin" enctype="multipart/form-data">
-        <div class="mb-3">
-            <label for="title" class="form-label">Producto</label>
-            <input type="text" class="form-control" id="title" name="title" />
-        </div>
-        <div class="mb-3">
-            <label for="price" class="form-label">Precio</label>
-            <input type="text" class="form-control" id="price" name="price" />
-        </div>
-        <div class="mb-3">
-            <label for="stock" class="form-label">Cantidad</label>
-            <input type="text" class="form-control" id="stock" name="stock" />
-        </div>
-        <div class="mb-3">
-            <label for="image" class="form-label">Imagen</label>
-            <input type="file" id="image" name="image" />
-        </div>
+  <form id="addItem" method="post" action="/admin" enctype="multipart/form-data">
+    <div class="mb-3">
+      <label for="title" class="form-label">Producto</label>
+      <input type="text" class="form-control" id="title" name="title" />
+    </div>
+    <div class="mb-3">
+      <label for="price" class="form-label">Precio</label>
+      <input type="text" class="form-control" id="price" name="price" />
+    </div>
+    <div class="mb-3">
+      <label for="stock" class="form-label">Cantidad</label>
+      <input type="text" class="form-control" id="stock" name="stock" />
+    </div>
+    <div class="mb-3">
+      <label for="category" class="form-label">Categoría</label>
+      <select class="form-select" name="category">
+        <option selected>Elegir categoria</option>
+        <option value="instrumentos">Instrumentos</option>
+        <option value="amplificadores">Amplificadores</option>
+        <option value="accesorios">Accesorios</option>
+      </select>
+    </div>
+    <div class="mb-3">
+      <label for="image" class="form-label">Imagen</label>
+      <input type="file" id="image" name="image" />
+    </div>
 
-        <button id="btnSave" type="submit" class="btn btn-primary">Guardar</button>
-        <a id="btnHome" class="btn btn-secondary" onclick="location.href='/home'">Ir a Home</a>
-    </form>
+    <button id="btnSave" type="submit" class="btn btn-primary">Guardar</button>
+    <a id="btnHome" class="btn btn-secondary" onclick="location.href='/home'">Ir a Home</a>
+  </form>
 </div>
 </br>
-

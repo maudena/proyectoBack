@@ -1,5 +1,9 @@
+
+//------------------ ARCHIVO USADO PARA TESTING Y POSTMAN
+
 import { productos as productosApi } from "../items.js";
 import "../config.js";
+
 
 export async function crearObj(req, res) {
   try {
@@ -18,13 +22,13 @@ export async function crearObj(req, res) {
 }
 
 export async function getItem(req, res){
-  const producto = await productosApi.listar(req.id)
+  const producto = await productosApi.listar(req.params.id)
   res.send(producto);
 }
 
 export async function getProd(req, res) {
   const productos = await productosApi.listarAll();
-  res.send(productos);
+  res.json(productos);
 }
 
 export async function routerDelete(req, res) {
@@ -46,5 +50,7 @@ export async function prodDelete(req, res) {
 }
 
 export async function prodPut(req, res) {
-    res.send(await productosApi.actualizar(req.body));
+    const product = await productosApi.actualizar(req.body)
+    res.send(product)
+  
 }

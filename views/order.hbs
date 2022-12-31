@@ -1,0 +1,76 @@
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="#">AppMusic</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNavDropdown">
+      <ul class="navbar-nav">
+        <li class="nav-item">
+          <a class="nav-link active" aria-current="page" href="/home">Home</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href='/productos'>Productos</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href='/carrito'>Carrito
+          <span class="badge bg-light text-dark">{{session.cart.totalQty}}</span></a>
+        </li>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            Cuenta
+          </a>
+          <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+            <li><a class="dropdown-item" href='/admin'>Manejo de productos</a></li>
+            <li><a class="dropdown-item" href='/profile'>Perfil</a></li>
+            <li><a class="dropdown-item" href='/logout'>Logout</a></li>
+          </ul>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href='/chat'>Chat</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+<div class="container my-5">
+    <h3 class="text-align-center">Tu orden esta casi lista, solo necesitamos confirmar tus datos</h3>
+    <div class="container-fluid justify-content-center">
+        <div class="card mb-3 my-5" style="max-width: 540px;">
+            <div class="row g-0">
+                <div class="col-md-8">
+                    <div class="card-body">
+                        <h5 class="card-title">{{datos.fullname}}</h5>
+                        <p class="card-text">Email: {{datos.email}}</p>
+                        <p class="card-text">Telefono: {{datos.phone}}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container-fluid justify-content-center">
+        <div class="card mb-3 my-5" style="max-width: 540px;">
+            <div class="row g-0">
+                <div class="col-md-8">
+                    <div class="card-body">
+                        <h5>Productos en el carrito:</h5>
+                        <br>
+                        {{#if cart.length}}
+                        {{#each cart}}
+                        <h5 class="card-title">{{item.title}}</h5>
+                        <p class="card-text">Cantidad: {{this.amount}}</p>
+                        <p class="card-text">Precio: {{item.price}}</p>
+                        {{/each}}
+                        {{/if}}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <strong>Total: ${{totalPrice}}</strong>
+            <div class="col-sm-6 col-md-2 col-md-offset-3 col-sm-offset-3">
+                <a href="/order/send" class="btn btn-success" role="button"> Confirmar pedido</a>
+            </div>
+        </div>
+    </div>
+</div>

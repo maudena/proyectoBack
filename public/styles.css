@@ -1,9 +1,6 @@
-/* #productCard{
-    max-height: 45rem;
-    max-width: 15rem;
-} */
 .card-img-top {
-    width: 100%;
+    width: 15vw;
     height: 30vw;
     object-fit: contain;
+    align-self: center;
 }

@@ -10,7 +10,7 @@ class ProdMongoDB extends ContenedorMongoDB {
       filename: { type: String, required: false },
       path:{ type: String, required: false },
       originalname: { type: String, required: false},
-      inCart: {type: Boolean, default: false}
+      category: {type: String, required: true}
     });
   }
 }

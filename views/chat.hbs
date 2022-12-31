@@ -34,16 +34,20 @@
   </div>
 </nav>
 
-<div class="container-fluid justify-content-center">
-    <div class="card mb-3 my-5" style="max-width: 540px;">
-        <div class="row g-0">
-            <div class="col-md-8">
-                <div class="card-body">
-                    <h5 class="card-title">{{datos.fullname}}</h5>
-                    <p class="card-text">Email: {{datos.email}}</p>
-                    <p class="card-text">Telefono: {{datos.phone}}</p>
-                </div>
-            </div>
+<div class="container-fluid">
+  <div class="col-md-4 mt-3 justify-content-center">
+    <form id="containerMsj">
+        <div class="mb-3">
+            <input type="email" class="form-control" id="email" placeholder="Ingresar Email" />
         </div>
-    </div>
+        <div id="errorEmail"></div>
+        <div id="containerMsjs" class="border"></div>
+        <div class="mb-3">
+            <label for="exampleFormControlTextarea1" class="form-label">Ingresar mensaje...</label>
+            <textarea class="form-control" id="mensaje" rows="3"></textarea>
+        </div>
+        <button type="submit" id="sendMsj">Enviar</button>
+    </form>
+  </div>
+    
 </div>

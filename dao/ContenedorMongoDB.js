@@ -1,6 +1,8 @@
 import mongoose from 'mongoose'
 import { asPOJO, removeField, renameField } from "./utils/objUtils.js";
 
+//-------------Funciones para productos
+
 class ContenedorMongoDB{
     constructor(nameColl, esquema){
         this.coleccion = mongoose.model(nameColl, esquema)
@@ -39,8 +41,8 @@ class ContenedorMongoDB{
 
     async actualizar(elem){
         try{
-            renameField(elem, 'id', '_id')
-            await this.coleccion.replaceOne({'_id': elem._id },elem)
+            renameField(elem, "_id", "id")
+            await this.coleccion.replaceOne({'_id': elem.id },elem)
             return elem
         }catch(error){
             console.log(error.message);
@@ -58,7 +60,7 @@ class ContenedorMongoDB{
 
     async deleteAll(){
         try {
-            const result = await this.coleccion.deleteMany({})
+             await this.coleccion.deleteMany({})
         } catch (error) {
             console.log(error.message);
         }

@@ -1,5 +1,8 @@
 /*============================[MODULOS]============================*/
+import * as dotenv from 'dotenv'
+dotenv.config({ path: './.env' })
 import express from "express";
+import http from "http"
 import cookieParser from "cookie-parser";
 import session from "express-session";
 import exphbs from "express-handlebars";
@@ -19,14 +22,24 @@ import routerHome from "./router/home.js"
 import routerCart from "./router/cart.js";
 import routerAdmin from "./router/admin.js";
 import routerApi from "./router/api.js"
+import Mensaje from "./models/MessagesModel.js"
 import multer from "multer"
 import { v4 as uuidv4 } from 'uuid';
 import {graphqlHTTP} from "express-graphql"
 import schema from "./graphql/buildSchema.js";
 import {getProd, crearObj, prodPut, routerDelete, getItem} from "./controllers/api.js"
+import { notFound, errorHandler } from './middlewares/errorHandler.js';
+import routerOrder from './router/order.js';
+import routerChat from './router/chat.js';
 const app = express();
+const server = http.createServer(app);
+import { Server } from 'socket.io';
+const io = new Server(server)
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
+
+
+
 
 /*============================[MIDDLEWARES]============================*/
                           
@@ -57,9 +70,8 @@ app.use(
 );
 
 
-
-
 /*============================[SESSION Y PASSPORT]============================*/
+
 app.use(cookieParser());
 app.use(bodyParser.urlencoded({extended: false}))
 app.use(
@@ -80,8 +92,10 @@ app.use(function(req,res,next){
 
 
 passport.use(
-  new LocalStrategy((username, password, done) => {
-    User.findOne({ username }, (err, user) => {
+  new LocalStrategy({
+    usernameField: "email"
+  },(email, password, done) => {
+    User.findOne({ email }, (err, user) => {
       if (err) console.log(err);
       if (!user) return done(null, false);
       bcrypt.compare(password, user.password, (err, isMatch) => {
@@ -112,7 +126,13 @@ app.use(routerHome)
 app.use(routerProd)
 app.use(routerAdmin)
 app.use(routerCart)
-app.use("/api", routerApi)
+app.use("/api", routerApi) // Las use mas que nada para testing
+app.use(routerOrder)
+app.use(routerChat)
+
+//-------ERROR HANDLER
+app.use(notFound)
+app.use(errorHandler)
 
 /*============================[HANDLEBARS]============================*/
 
@@ -127,9 +147,22 @@ app.engine(
 );
 app.set("view engine", ".hbs");
 
-/*============================[SERVIDOR]============================*/
-const PORT = process.env.PORT || 8080;
-const server = app.listen(PORT, () => {
+/*============================[SERVIDOR Y SOCKET IO]============================*/
+
+io.on('connection', async (socket) => {
+  const mensajes = await Mensaje.find().lean()
+
+   socket.emit("mensajes", mensajes)
+
+  socket.on("newMsj", async mensaje => {
+    const msg = new Mensaje(mensaje)
+    await msg.save()
+    io.sockets.emit("mensajes", msg)
+   })
+})
+
+const PORT = process.env.PORT || 3000
+server.listen(PORT, () => {
   console.log(`Servidor escuchando en puerto ${PORT}`);
 });
 server.on("error", (error) => {
