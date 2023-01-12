@@ -2,12 +2,11 @@ import dotenv from "dotenv"
 dotenv.config()
 import User from "../models/User.js";
 import { Cart } from "../models/CartModel.js";
-import twilio from "twilio";
 import { createTransport } from "nodemailer"
 
 //----------------------------------------NODEMAILER CONFIG
 
-const testMail = ""                       //-----Completar con email para probar funcionalidad
+const testMail = process.env.TEST_MAIL                       //-----Completar con email para probar funcionalidad
 const testPass = process.env.TEST_PASS
 const transporter = createTransport({
   service: "gmail",
@@ -21,12 +20,6 @@ const transporter = createTransport({
     rejectUnauthorized: false
 }
 });
-
-//--------------------------------------------------
-const accountSid = process.env.ACC_SID;           //
-const authToken = process.env.AUTH_TOKEN;         //---------TWILIO CONFIG
-const client = twilio(accountSid, authToken);     //
-
 
 
 export async function getOrder(req, res) {
@@ -49,17 +42,6 @@ export async function sendOrder(req,res){
     titles += item.item.title + ", ";
   });
   
-
-  //-------------------MENSAJE DE TWILIO
-  await client.messages.create({
-    body: `Nuevo pedido de ${datosUser.username}, email: ${datosUser.email}.
-    Productos: ${titles}
-    Precio total ${cart.totalPrice}`,
-    from: "+19148956088",
-    to: process.env.TEST_NUM,
-  }).then(message => console.log(message))
-  .catch(error => console.log(error));
-
   //---------------MAIL DE NODEMAILER
   const emailContent = {
     from: "Test App Music",
