@@ -47,7 +47,7 @@ export async function sendOrder(req,res){
     from: "Test App Music",
     to: `Administrador ${testMail}`,
     subject: "Nueva Orden de compra",
-    html: `El usuario ${datosUser.username} ha generado una nueva orden de compra.<br><br> Email: ${newUser.email} <br> Productos: ${titles} <br> Precio total: ${cart.totalPrice} <br>`,
+    html: `El usuario ${datosUser.fullname} ha generado una nueva orden de compra.<br><br> Email: ${datosUser.email} <br> Productos: ${titles} <br> Precio total: ${cart.totalPrice} <br>`,
   };
   try {
     await transporter.sendMail(emailContent);
